@@ -1,0 +1,30 @@
+{
+  "expo": {
+    "name": "ExamsValley",
+    "slug": "examsvalley",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "examsvalley",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.examsvalley.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.examsvalley.app"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-document-picker",
+      "expo-image-picker",
+      "expo-asset"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
