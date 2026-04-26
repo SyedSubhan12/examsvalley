@@ -2,9 +2,11 @@
 // CONVERTED TO:   app/(auth)/login.tsx
 // BUCKET:         B_convert
 // WEB LIBRARIES REPLACED: wouter → expo-router, @radix-ui/react-* → RN primitives, form → View
-// LOGIC CHANGES: localStorage → SecureStore (handled in AuthContext); window.location → router; Google OAuth → Toast placeholder
+// LOGIC CHANGES: localStorage → SecureStore (handled in AuthContext); window.location → router;
+//   Google OAuth → expo-auth-session (Google.useAuthRequest) calling AuthContext.loginWithGoogle
+//   with the returned idToken (web's GET /api/auth/google redirect flow doesn't work on native).
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   View, Text, TextInput, TouchableOpacity, ScrollView,
   KeyboardAvoidingView, Platform, SafeAreaView, ActivityIndicator,
@@ -14,8 +16,12 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import Toast from "react-native-toast-message";
+import * as WebBrowser from "expo-web-browser";
+import * as Google from "expo-auth-session/providers/google";
 import { useAuth } from "@/context/AuthContext";
 import { validateAuthEmailAddress, AUTH_EMAIL_HELP_TEXT } from "@/lib/email-validation";
+
+WebBrowser.maybeCompleteAuthSession();
 
 const loginSchema = z.object({
   email: z.string()
@@ -35,11 +41,93 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 export default function LoginPage() {
   const router = useRouter();
-  const { login, isLoading } = useAuth();
+  const { login, loginWithGoogle, isLoading, user } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
   const [emailCheck, setEmailCheck] = useState<{ exists: boolean; checked: boolean; loading: boolean }>({
     exists: false, checked: false, loading: false,
   });
+
+  const [googleRequest, googleResponse, promptGoogleAsync] = Google.useAuthRequest({
+    iosClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID_IOS,
+    androidClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID_ANDROID,
+    webClientId: process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID_WEB,
+    scopes: ["profile", "email"],
+  });
+
+  function redirectAfterAuth(role?: string) {
+    const target =
+      role === "teacher" ? "/(teacher)/dashboard" :
+      role === "admin"   ? "/(admin)/dashboard"   :
+                           "/(student)/dashboard";
+    router.replace(target as any);
+  }
+
+  async function handleGoogleToken(idToken?: string, accessToken?: string) {
+    if (!idToken && !accessToken) {
+      Toast.show({ type: "error", text1: "Google sign-in failed", text2: "No token returned by Google." });
+      return;
+    }
+    setGoogleLoading(true);
+    const result = await loginWithGoogle(idToken ?? "", accessToken);
+    setGoogleLoading(false);
+
+    if (result.success) {
+      Toast.show({ type: "success", text1: "Welcome!", text2: "Signed in with Google." });
+      // AuthContext.loginWithGoogle has already setUser; read the latest from context on next render.
+      redirectAfterAuth(user?.role);
+      return;
+    }
+
+    if (result.needsEmailVerification && result.email) {
+      Toast.show({ type: "info", text1: "Verify your teacher email", text2: result.error || "Enter the OTP sent to your inbox." });
+      router.replace(`/(auth)/verify-teacher-email?email=${encodeURIComponent(result.email)}` as any);
+      return;
+    }
+
+    Toast.show({ type: "error", text1: "Google sign-in failed", text2: result.error || "Could not complete Google sign-in" });
+  }
+
+  useEffect(() => {
+    if (!googleResponse) return;
+    if (googleResponse.type === "success") {
+      const { authentication, params } = googleResponse;
+      const idToken = (authentication as any)?.idToken ?? params?.id_token;
+      const accessToken = authentication?.accessToken ?? params?.access_token;
+      handleGoogleToken(idToken, accessToken);
+    } else if (googleResponse.type === "error") {
+      Toast.show({
+        type: "error",
+        text1: "Google sign-in failed",
+        text2: googleResponse.error?.message || "OAuth flow returned an error.",
+      });
+    }
+    // dismiss/cancel: no-op
+  }, [googleResponse]);
+
+  async function onGooglePress() {
+    const hasAnyClientId =
+      !!process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID_IOS ||
+      !!process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID_ANDROID ||
+      !!process.env.EXPO_PUBLIC_GOOGLE_CLIENT_ID_WEB;
+    if (!hasAnyClientId) {
+      Toast.show({
+        type: "error",
+        text1: "Google sign-in unavailable",
+        text2: "Set EXPO_PUBLIC_GOOGLE_CLIENT_ID_{IOS,ANDROID,WEB} in your env.",
+      });
+      return;
+    }
+    if (!googleRequest) {
+      Toast.show({ type: "info", text1: "Preparing Google sign-in", text2: "Please try again in a moment." });
+      return;
+    }
+    try {
+      await promptGoogleAsync();
+    } catch (err: any) {
+      Toast.show({ type: "error", text1: "Google sign-in failed", text2: err?.message || "Could not start OAuth flow." });
+    }
+  }
 
   const { control, handleSubmit, formState: { errors }, getValues } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
@@ -173,12 +261,16 @@ export default function LoginPage() {
                   <View className="flex-1 h-px bg-gray-200" />
                 </View>
 
-                {/* Google (placeholder) */}
+                {/* Google */}
                 <TouchableOpacity
-                  onPress={() => Toast.show({ type: "info", text1: "Coming soon", text2: "Google Sign-In will be available soon." })}
+                  onPress={onGooglePress}
+                  disabled={googleLoading || !googleRequest}
                   className="w-full border border-gray-300 rounded-lg py-3 items-center flex-row justify-center"
                 >
-                  <Text className="text-gray-700 font-medium">G  Continue with Google</Text>
+                  {googleLoading
+                    ? <ActivityIndicator size="small" />
+                    : <Text className="text-gray-700 font-medium">G  Continue with Google</Text>
+                  }
                 </TouchableOpacity>
 
                 {/* Demo credentials */}

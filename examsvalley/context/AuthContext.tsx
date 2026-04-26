@@ -4,7 +4,10 @@
 // WEB LIBRARIES REPLACED: localStorage → expo-secure-store
 // LOGIC CHANGES: All localStorage calls replaced with SecureStore async equivalents;
 //   fetch URLs prefixed with EXPO_PUBLIC_API_URL; functions that access storage made async;
-//   updateUser uses fire-and-forget SecureStore.setItemAsync inside setUser callback
+//   updateUser uses fire-and-forget SecureStore.setItemAsync inside setUser callback;
+//   ADDED loginWithGoogle(idToken, accessToken?) — mobile cannot use the web's redirect-based
+//   GET /api/auth/google flow, so it POSTs the OAuth token to /api/auth/google/mobile
+//   (backend route may need to be added; mirrors the user payload shape of /api/auth/login).
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 import type { User, UserRole } from "@/types/index";
@@ -40,6 +43,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   login: (email: string, password: string) => Promise<LoginResult>;
+  loginWithGoogle: (idToken: string, accessToken?: string) => Promise<LoginResult>;
   logout: () => void;
   updateUser: (updates: Partial<AuthUser>) => void;
 }
@@ -176,6 +180,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const loginWithGoogle = useCallback(async (idToken: string, accessToken?: string): Promise<LoginResult> => {
+    setIsLoading(true);
+    try {
+      if (!idToken && !accessToken) {
+        setIsLoading(false);
+        return { success: false, error: "Missing Google token" };
+      }
+      // NOTE: Web uses GET /api/auth/google (redirect-based passport flow), which
+      // is not usable from a native client. Mobile assumes a token-exchange endpoint
+      // POST /api/auth/google/mobile that accepts { idToken, accessToken } and returns
+      // the same user payload as /api/auth/login. Backend may need to add this route.
+      const response = await fetch(`${process.env.EXPO_PUBLIC_API_URL}/api/auth/google/mobile`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify({ idToken, accessToken }),
+      });
+
+      const payload = await response.json().catch(() => null);
+
+      if (!response.ok) {
+        setIsLoading(false);
+        return {
+          success: false,
+          error: payload?.message || payload?.error || "Google sign-in failed",
+          needsEmailVerification: payload?.needsEmailVerification,
+          email: payload?.email,
+          maskedEmail: payload?.maskedEmail,
+          needsApproval: payload?.needsApproval,
+        };
+      }
+
+      const userData = payload;
+      setUser(userData);
+      await SecureStore.setItemAsync("ExamsValley_user", JSON.stringify(userData));
+      setIsLoading(false);
+      return { success: true };
+    } catch (error) {
+      setIsLoading(false);
+      const errorMessage = error instanceof Error ? error.message : "Google sign-in failed";
+      return { success: false, error: errorMessage };
+    }
+  }, []);
+
   const updateUser = useCallback((updates: Partial<AuthUser>) => {
     setUser((prev) => {
       if (!prev) return null;
@@ -193,6 +241,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user,
         isLoading,
         login,
+        loginWithGoogle,
         logout,
         updateUser,
       }}
