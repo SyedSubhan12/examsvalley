@@ -14,6 +14,7 @@ import { queryClient } from "@/lib/queryClient";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
+import { FeedbackPopup } from "@/components/FeedbackPopup";
 import * as SecureStore from "expo-secure-store";
 import "../global.css";
 
@@ -56,6 +57,7 @@ export default function RootLayout() {
             <FirstRunGate>
               <Stack screenOptions={{ headerShown: false }} />
             </FirstRunGate>
+            <FeedbackPopup delayMs={2 * 60 * 1000} />
             <Toast />
           </AuthProvider>
         </QueryClientProvider>

@@ -21,12 +21,15 @@ export default function AdminLayout() {
       <Tabs.Screen name="teachers/index" options={{ title: "Teachers", tabBarLabel: "Teachers" }} />
       <Tabs.Screen name="settings" options={{ title: "Settings", tabBarLabel: "Settings" }} />
 
-      {/* Hidden screens */}
+      {/* Hidden screens — accessible via navigation but not shown in tab bar */}
       <Tabs.Screen name="users/[id]" options={{ href: null }} />
       <Tabs.Screen name="teachers/[id]" options={{ href: null }} />
       <Tabs.Screen name="analytics" options={{ href: null }} />
       <Tabs.Screen name="feedback" options={{ href: null }} />
       <Tabs.Screen name="boards/index" options={{ href: null }} />
+      <Tabs.Screen name="boards/[id]" options={{ href: null }} />
+      <Tabs.Screen name="subjects" options={{ href: null }} />
+      <Tabs.Screen name="resources" options={{ href: null }} />
     </Tabs>
   );
 }

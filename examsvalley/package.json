@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "start:tailscale": "expo start --tunnel"
+    "start:tailscale": "expo start --host 100.72.195.67",
+    "start:tunnel": "expo start --tunnel"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^5.0.6",
