@@ -2,9 +2,12 @@
 // CONVERTED TO:   lib/queryClient.ts
 // BUCKET:         A_reuse
 // WEB LIBRARIES REPLACED: none
-// LOGIC CHANGES: Prepend EXPO_PUBLIC_API_URL to all fetch calls
+// LOGIC CHANGES: Prepend EXPO_PUBLIC_API_URL to all fetch calls;
+//   Authorization: Bearer header injected from authToken singleton so the
+//   upriser-web backend (with jwt-mobile-auth middleware) accepts mobile sessions.
 
 import { QueryClient, QueryFunction } from "@tanstack/react-query";
+import { getAccessToken } from "./authToken";
 
 async function throwIfResNotOk(res: Response) {
   if (!res.ok) {
@@ -18,9 +21,14 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
+  const token = getAccessToken();
+  const headers: Record<string, string> = {};
+  if (data) headers["Content-Type"] = "application/json";
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
   const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}${url}`, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers,
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
@@ -56,8 +64,10 @@ export const getQueryFn: <T>(options: {
       }
     }
 
+    const token = getAccessToken();
     const res = await fetch(`${process.env.EXPO_PUBLIC_API_URL}${fetchUrl}`, {
       credentials: "include",
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {

@@ -12,7 +12,10 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 import type { User, UserRole } from "@/types/index";
 import { apiRequest } from "@/lib/queryClient";
+import { setAccessToken } from "@/lib/authToken";
 import * as SecureStore from "expo-secure-store";
+
+const JWT_KEY = "ExamsValley_jwt";
 
 interface AuthUser {
   id: string;
@@ -61,7 +64,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Ignore errors during logout
     }
     setUser(null);
-    await SecureStore.deleteItemAsync("ExamsValley_user");
+    setAccessToken(null);
+    await Promise.all([
+      SecureStore.deleteItemAsync("ExamsValley_user"),
+      SecureStore.deleteItemAsync(JWT_KEY),
+    ]);
   }, []);
 
   // Check authentication status
@@ -78,14 +85,22 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(userData);
           await SecureStore.setItemAsync("ExamsValley_user", JSON.stringify(userData));
         } else {
-          // Any non-OK status (401, 403, etc.) should be treated as logged out
           setUser(null);
-          await SecureStore.deleteItemAsync("ExamsValley_user");
+          setAccessToken(null);
+          await Promise.all([
+            SecureStore.deleteItemAsync("ExamsValley_user"),
+            SecureStore.deleteItemAsync(JWT_KEY),
+          ]);
         }
       } catch (error: any) {
         if (error.name === 'AbortError') return;
 
-        const storedUser = await SecureStore.getItemAsync("ExamsValley_user");
+        // Restore JWT from SecureStore so subsequent API calls are authenticated
+        const [storedUser, storedToken] = await Promise.all([
+          SecureStore.getItemAsync("ExamsValley_user"),
+          SecureStore.getItemAsync(JWT_KEY),
+        ]);
+        if (storedToken) setAccessToken(storedToken);
         if (storedUser) {
           try {
             setUser(JSON.parse(storedUser));
@@ -212,7 +227,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         };
       }
 
-      const userData = payload;
+      // The Expo Router API route returns { user, token }
+      const userData = payload?.user ?? payload;
+      const jwtToken: string | undefined = payload?.token;
+
+      if (jwtToken) {
+        setAccessToken(jwtToken);
+        await SecureStore.setItemAsync(JWT_KEY, jwtToken);
+      }
       setUser(userData);
       await SecureStore.setItemAsync("ExamsValley_user", JSON.stringify(userData));
       setIsLoading(false);
