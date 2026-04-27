@@ -23,6 +23,25 @@
 
 import { OAuth2Client } from "google-auth-library";
 import jwt from "jsonwebtoken";
+
+// ── In-memory rate limiter: 5 requests per IP per minute ──────────────────────
+const _rl = new Map<string, { n: number; reset: number }>();
+function rateLimitOk(ip: string): boolean {
+  const now = Date.now();
+  const entry = _rl.get(ip);
+  if (!entry || now > entry.reset) {
+    _rl.set(ip, { n: 1, reset: now + 60_000 });
+    return true;
+  }
+  if (entry.n >= 5) return false;
+  entry.n++;
+  return true;
+}
+// Clean up stale entries every 5 minutes to prevent memory growth
+setInterval(() => {
+  const now = Date.now();
+  for (const [k, v] of _rl) if (now > v.reset) _rl.delete(k);
+}, 5 * 60_000);
 import { getUserByGoogleId, getUserByEmail, createUser, updateUser } from "@/server/userStorage";
 import { determineRoleFromEmail } from "@/server/role-manager";
 
@@ -42,6 +61,15 @@ function safeUser(user: Record<string, any>) {
 }
 
 export async function POST(request: Request) {
+  // Rate limit by IP (cf-connecting-ip → x-forwarded-for → fallback)
+  const ip =
+    request.headers.get("cf-connecting-ip") ??
+    request.headers.get("x-forwarded-for")?.split(",")[0].trim() ??
+    "unknown";
+  if (!rateLimitOk(ip)) {
+    return Response.json({ message: "Too many requests — try again in a minute" }, { status: 429 });
+  }
+
   const jwtSecret = process.env.JWT_SECRET;
   if (!jwtSecret) {
     console.error("[mobile-auth] JWT_SECRET not set");

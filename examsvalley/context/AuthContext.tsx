@@ -16,6 +16,33 @@ import { setAccessToken } from "@/lib/authToken";
 import * as SecureStore from "expo-secure-store";
 
 const JWT_KEY = "ExamsValley_jwt";
+const BASE = process.env.EXPO_PUBLIC_API_URL;
+
+/** Returns true if the JWT exp is within 7 days (or unreadable) */
+function isTokenExpiringSoon(token: string): boolean {
+  try {
+    const part = token.split(".")[1];
+    const payload = JSON.parse(atob(part));
+    return (payload.exp * 1000) - Date.now() < 7 * 24 * 60 * 60 * 1000;
+  } catch {
+    return true;
+  }
+}
+
+/** Silently refresh the JWT via the Expo Router API route. Returns new token or null. */
+async function refreshJwt(oldToken: string): Promise<string | null> {
+  try {
+    const res = await fetch(`${BASE}/api/auth/refresh`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${oldToken}` },
+    });
+    if (!res.ok) return null;
+    const { token } = await res.json();
+    return token ?? null;
+  } catch {
+    return null;
+  }
+}
 
 interface AuthUser {
   id: string;
@@ -100,7 +127,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           SecureStore.getItemAsync("ExamsValley_user"),
           SecureStore.getItemAsync(JWT_KEY),
         ]);
-        if (storedToken) setAccessToken(storedToken);
+        if (storedToken) {
+          let activeToken = storedToken;
+          // Silently refresh if expiring within 7 days
+          if (isTokenExpiringSoon(storedToken)) {
+            const fresh = await refreshJwt(storedToken);
+            if (fresh) {
+              activeToken = fresh;
+              await SecureStore.setItemAsync(JWT_KEY, fresh);
+            }
+          }
+          setAccessToken(activeToken);
+        }
         if (storedUser) {
           try {
             setUser(JSON.parse(storedUser));
