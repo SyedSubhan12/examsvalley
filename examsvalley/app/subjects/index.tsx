@@ -5,10 +5,8 @@
 
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, ScrollView, SafeAreaView,
-  ActivityIndicator, TextInput,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, TextInput } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import type { Board, Qualification, Subject } from "@/lib/curriculumData";

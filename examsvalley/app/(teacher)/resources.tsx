@@ -2,7 +2,8 @@
 // CONVERTED TO:   app/(teacher)/resources.tsx
 // BUCKET:         B_convert — redirects teacher to curriculum browser
 
-import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import { View, Text, TouchableOpacity } from "@/components/tw"
+import { SafeAreaView } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function TeacherResourcesPage() {

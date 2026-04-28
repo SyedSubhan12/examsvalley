@@ -4,9 +4,8 @@
 // WEB LIBRARIES REPLACED: wouter → expo-router, shadcn → RN primitives
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, ScrollView, SafeAreaView, ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import type { Board, Qualification, Branch } from "@/lib/curriculumData";
 

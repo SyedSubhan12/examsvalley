@@ -6,9 +6,8 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator, Alert,
-} from "react-native";
+import { View, Text, TouchableOpacity } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator, Alert } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";

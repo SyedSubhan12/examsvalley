@@ -2,7 +2,7 @@
 // Standardised back-button + title bar reused across teacher, admin, and public screens.
 // Drop-in replacement for the web PageHeader / ScreenHeader components.
 
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "@/components/tw";
 import { useRouter } from "expo-router";
 
 interface BreadcrumbItem {

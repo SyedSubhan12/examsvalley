@@ -5,9 +5,8 @@
 // LOGIC CHANGES: delayMinutes prop preserved; timer fires only when user is authenticated; dismissed by pressing outside or skip.
 
 import { useEffect, useState } from "react";
-import {
-  View, Text, TextInput, TouchableOpacity, Modal, KeyboardAvoidingView, Platform,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity } from "@/components/tw"
+import { Modal, KeyboardAvoidingView, Platform } from "react-native";
 import { useAuth } from "@/context/AuthContext";
 import { useFeedbackStore } from "@/hooks/useFeedbackStore";
 import Toast from "react-native-toast-message";

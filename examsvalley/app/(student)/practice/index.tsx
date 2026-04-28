@@ -4,9 +4,8 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  View, Text, TextInput, TouchableOpacity, SafeAreaView, ActivityIndicator, ScrollView, Modal, FlatList,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView, FlatList } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator, Modal } from "react-native";
 import { useRouter } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import type { Quiz } from "@/types";

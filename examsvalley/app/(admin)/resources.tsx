@@ -5,16 +5,8 @@
 // LOGIC CHANGES: Bulk folder upload (UppyFolderUploader) replaced with single-file expo-document-picker. Multi-file batch upload not supported on native — documented limitation. File selection uses DocumentPicker.getDocumentAsync. API endpoints identical (/api/admin/boards, /api/curriculum/qualifications, etc.).
 
 import { useState, useCallback } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-  Modal,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, TextInput } from "@/components/tw"
+import { Modal, ActivityIndicator, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import * as DocumentPicker from "expo-document-picker";

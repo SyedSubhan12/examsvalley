@@ -4,9 +4,8 @@
 
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator, ScrollView, Modal, Linking,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator, Modal, Linking } from "react-native";
 import { FlashList } from "@shopify/flash-list";
 
 const BASE = process.env.EXPO_PUBLIC_API_URL;

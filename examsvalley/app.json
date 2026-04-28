@@ -8,20 +8,23 @@
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.examsvalley.app"
+      "bundleIdentifier": "com.examsvalley.app",
+      "googleServicesFile": "./config/client_246078119801-26r0e1rgc3avcehduo7hjcvt2v5utck9.apps.googleusercontent.com.plist"
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#ffffff"
       },
-      "package": "com.examsvalley.app"
+      "package": "com.examsvalley.app",
+      "googleServicesFile": "./config/client_secret_246078119801-5td0kkstu4qhapb4hku6ego3jnl8oppn.apps.googleusercontent.com.json"
     },
     "plugins": [
       "expo-router",
       "expo-secure-store",
       "expo-document-picker",
       "expo-image-picker",
-      "expo-asset"
+      "expo-asset",
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

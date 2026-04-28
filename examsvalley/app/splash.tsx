@@ -7,7 +7,8 @@
 // TODO(integration): _layout.tsx must redirect to /splash on first launch when SecureStore.getItemAsync("ExamsValley_splash_seen") !== "true"
 
 import { useCallback, useRef, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity } from "@/components/tw"
+import { StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Video, ResizeMode, AVPlaybackStatus } from "expo-av";

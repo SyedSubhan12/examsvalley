@@ -7,9 +7,8 @@
 //   Board→Qual→Subject→Topic cascade fully implemented. File upload via expo-document-picker.
 
 import { useState } from "react";
-import {
-  View, Text, TextInput, TouchableOpacity, ScrollView, ActivityIndicator,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from "@/components/tw"
+import { ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";

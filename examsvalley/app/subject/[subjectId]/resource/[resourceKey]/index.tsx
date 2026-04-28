@@ -6,10 +6,8 @@
 
 import { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, ScrollView, SafeAreaView,
-  ActivityIndicator, Linking,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator, Linking } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import type { Subject, ResourceCategory, ResourceNode, FileAsset, FileType } from "@/lib/curriculumData";

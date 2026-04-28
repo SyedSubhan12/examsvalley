@@ -5,15 +5,8 @@
 // LOGIC CHANGES: navigator.share replaced with Clipboard.setString; Avatar fallback uses initials in View; Star rendering inlined
 
 import { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  Image,
-  ActivityIndicator,
-  Linking,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "@/components/tw"
+import { Image, ActivityIndicator, Linking } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";

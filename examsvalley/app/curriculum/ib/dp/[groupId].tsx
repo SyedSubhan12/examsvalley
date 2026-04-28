@@ -5,7 +5,8 @@
 //   GET /api/curriculum/subject-groups/ib-dp/:groupId/subjects (or fallback to
 //   /api/curriculum/subjects?subjectGroupId=:groupId). Navigates to /subject/:subjectId.
 
-import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, TextInput } from "@/components/tw"
+import { ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";

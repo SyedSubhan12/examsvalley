@@ -4,10 +4,8 @@
 
 import { useState, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  View, Text, TextInput, TouchableOpacity, SafeAreaView, ActivityIndicator,
-  Modal, FlatList, ScrollView, Alert,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, FlatList, ScrollView } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator, Modal, Alert } from "react-native";
 import { useRouter } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 

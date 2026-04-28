@@ -3,9 +3,8 @@
 // BUCKET:         B_convert
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator, ScrollView,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 

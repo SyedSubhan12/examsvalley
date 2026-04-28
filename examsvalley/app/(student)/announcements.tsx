@@ -5,9 +5,8 @@
 
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, ScrollView, SafeAreaView, ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator } from "react-native";
 import type { Announcement } from "@/types";
 
 const BASE = process.env.EXPO_PUBLIC_API_URL;

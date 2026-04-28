@@ -4,12 +4,7 @@
 // WEB LIBRARIES REPLACED: wouter Link → expo-router useRouter, motion (framer-motion) → static View (no animation library), shadcn Button/Card → TouchableOpacity/View, ThemeContext dropped (no dark mode on mobile yet)
 // LOGIC CHANGES: Animations removed; avatar placeholder images removed (DiceBear URLs avoided); role CTA mapped to expo-router paths
 
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "@/components/tw";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/context/AuthContext";

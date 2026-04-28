@@ -8,10 +8,8 @@
 //   Questions: text, 4 options (A-D), correctOptionIndex, marks, explanation.
 
 import { useState } from "react";
-import {
-  View, Text, TextInput, TouchableOpacity, ScrollView,
-  ActivityIndicator, Switch, Modal, Alert,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from "@/components/tw"
+import { ActivityIndicator, Switch, Modal, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";

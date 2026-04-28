@@ -4,10 +4,8 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, ScrollView, SafeAreaView,
-  TextInput, ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, TextInput } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator } from "react-native";
 import { apiRequest } from "@/lib/queryClient";
 import Toast from "react-native-toast-message";
 import type { Announcement } from "@/types";

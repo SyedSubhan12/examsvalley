@@ -5,8 +5,9 @@
 // LOGIC CHANGES: Three-state gate ("checking"|"wizard"|"ready"); device id generated via Math.random+Date.now fallback (expo-crypto not installed). Wizard handles its own POST /api/onboarding/complete + flag write — gate just routes to it when not completed.
 
 import { useEffect, useState, type ReactNode } from "react";
-import { View, ActivityIndicator, Text } from "react-native";
-import { Redirect } from "expo-router";
+import { View, Text } from "@/components/tw";
+import { ActivityIndicator } from "react-native";
+import { useRouter } from "expo-router";
 import * as SecureStore from "expo-secure-store";
 import Toast from "react-native-toast-message";
 
@@ -40,6 +41,13 @@ interface OnboardingGateProps {
 
 export function OnboardingGate({ children }: OnboardingGateProps) {
   const [state, setState] = useState<GateState>("checking");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (state === "wizard") {
+      router.replace("/onboarding");
+    }
+  }, [state, router]);
 
   useEffect(() => {
     let cancelled = false;
@@ -113,7 +121,7 @@ export function OnboardingGate({ children }: OnboardingGateProps) {
   }
 
   if (state === "wizard") {
-    return <Redirect href="/onboarding" />;
+    return null;
   }
 
   return <>{children}</>;

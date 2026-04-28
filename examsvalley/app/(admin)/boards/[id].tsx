@@ -5,15 +5,8 @@
 // LOGIC CHANGES: id='new' → create mode (POST /api/admin/boards), else edit mode (PATCH /api/admin/boards/:id). Logo upload section replaced with a note (no file picker for logos on this form). API calls use apiRequest from lib/queryClient.
 
 import { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  Switch,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from "@/components/tw"
+import { Switch, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";

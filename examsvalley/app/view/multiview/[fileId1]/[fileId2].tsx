@@ -5,14 +5,8 @@
 // LOGIC CHANGES: Split-pane viewer dropped (no web iframe on native); shows file metadata cards with "Open in Browser" buttons. Selection sidebar rendered as a scrollable list. window.history.back → router.back.
 
 import { useState, useMemo } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, TextInput } from "@/components/tw"
+import { ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";

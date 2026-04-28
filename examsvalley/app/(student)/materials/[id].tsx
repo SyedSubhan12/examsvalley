@@ -4,9 +4,8 @@
 // WEB LIBRARIES REPLACED: iframe PDF → expo-file-system + Sharing
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator, ScrollView, Alert,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator, Alert } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import * as FileSystem from "expo-file-system";
 import * as Sharing from "expo-sharing";

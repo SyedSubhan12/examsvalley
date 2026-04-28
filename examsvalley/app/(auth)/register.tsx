@@ -8,10 +8,8 @@
 //   user (web's passport-google-oauth20 strategy), and we redirect by returned role.
 
 import { useEffect, useState } from "react";
-import {
-  View, Text, TextInput, TouchableOpacity, ScrollView,
-  KeyboardAvoidingView, Platform, SafeAreaView, ActivityIndicator,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from "@/components/tw"
+import { KeyboardAvoidingView, Platform, SafeAreaView, ActivityIndicator } from "react-native";
 import { Link, useRouter } from "expo-router";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";

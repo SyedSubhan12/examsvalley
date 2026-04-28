@@ -5,14 +5,8 @@
 // LOGIC CHANGES: Single screen instead of modal. Calls /api/onboarding/complete itself (gate threads no callback); writes SecureStore flag via markOnboardingComplete(); router.replace("/") on success. Skip uses defaults same as web.
 
 import { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import {
   ChevronLeft,

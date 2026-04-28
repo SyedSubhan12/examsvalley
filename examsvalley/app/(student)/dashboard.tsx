@@ -5,9 +5,8 @@
 // LOGIC CHANGES: fetch URLs prefixed with BASE; quiz-attempts, assignments, quizzes queries verbatim
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, ScrollView, SafeAreaView, ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { useAuth } from "@/context/AuthContext";
 import type { QuizAttempt, Assignment, Quiz } from "@/types";

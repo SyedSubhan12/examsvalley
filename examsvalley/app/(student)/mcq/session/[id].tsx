@@ -6,10 +6,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, Pressable, ScrollView,
-  SafeAreaView, ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableOpacity, Pressable, ScrollView } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import Toast from "react-native-toast-message";

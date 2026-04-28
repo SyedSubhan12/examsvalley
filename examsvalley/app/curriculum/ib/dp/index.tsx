@@ -4,7 +4,8 @@
 // WEB LIBRARIES REPLACED: wouter Link → expo-router useRouter, shadcn Card/Badge/Skeleton → RN View/Text/ActivityIndicator, CurriculumLayout/ScreenHeader → SafeAreaView + back button
 // LOGIC CHANGES: Fetches /api/curriculum/boards for IB board + /api/curriculum/subject-groups/ib-dp for groups. Group color palette mapped to NativeWind classes. Individual group pages (/curriculum/ib/dp/[groupId]) are Phase 5 work.
 
-import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from "react-native";
+import { View, Text, TouchableOpacity, ScrollView } from "@/components/tw"
+import { ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useQuery } from "@tanstack/react-query";

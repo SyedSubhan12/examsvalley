@@ -3,9 +3,8 @@
 // BUCKET:         B_convert — placeholder save handlers (same as web)
 
 import { useState } from "react";
-import {
-  View, Text, TextInput, TouchableOpacity, SafeAreaView, ScrollView, Switch, Alert,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from "@/components/tw"
+import { SafeAreaView, Switch, Alert } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function SystemSettingsPage() {

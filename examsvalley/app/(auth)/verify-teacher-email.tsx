@@ -5,10 +5,8 @@
 // LOGIC CHANGES: URL param read via useLocalSearchParams instead of URLSearchParams(window.location.search)
 
 import { useState } from "react";
-import {
-  View, Text, TextInput, TouchableOpacity, ScrollView,
-  KeyboardAvoidingView, Platform, SafeAreaView, ActivityIndicator,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from "@/components/tw"
+import { KeyboardAvoidingView, Platform, SafeAreaView, ActivityIndicator } from "react-native";
 import { Link, useRouter, useLocalSearchParams } from "expo-router";
 import Toast from "react-native-toast-message";
 

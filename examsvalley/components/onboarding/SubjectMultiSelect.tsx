@@ -5,14 +5,8 @@
 // LOGIC CHANGES: No popover; inline search box and scrollable list. Selected subjects render as removable chips below. Loads /api/curriculum/subjects on mount.
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-  ActivityIndicator,
-} from "react-native";
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from "@/components/tw"
+import { ActivityIndicator } from "react-native";
 import { Check, X, Search } from "lucide-react-native";
 
 const BASE = process.env.EXPO_PUBLIC_API_URL;

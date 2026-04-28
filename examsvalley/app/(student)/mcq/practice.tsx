@@ -6,10 +6,8 @@
 
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, ScrollView, SafeAreaView,
-  ActivityIndicator, Modal, FlatList,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, FlatList } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator, Modal } from "react-native";
 import { useRouter } from "expo-router";
 import Toast from "react-native-toast-message";
 

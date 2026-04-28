@@ -4,9 +4,8 @@
 
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator, ScrollView, Alert, Modal, FlatList,
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, FlatList } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator, Alert, Modal } from "react-native";
 import { useRouter, useLocalSearchParams } from "expo-router";
 
 const BASE = process.env.EXPO_PUBLIC_API_URL;

@@ -5,7 +5,8 @@
 // LOGIC CHANGES: Modal-based registration prompts; StudentRegistrationModal/TutorRegistrationModal rendered inline as Modals
 
 import { useEffect, useState, type ReactNode } from "react";
-import { View, Text, ActivityIndicator, Modal, SafeAreaView } from "react-native";
+import { View, Text } from "@/components/tw"
+import { ActivityIndicator, Modal, SafeAreaView } from "react-native";
 import { useAuth } from "@/context/AuthContext";
 
 interface RegistrationGateProps {

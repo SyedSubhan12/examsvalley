@@ -5,8 +5,9 @@
 // LOGIC CHANGES: useLocation/setLocation → useRouter/usePathname; div spinner → ActivityIndicator View
 
 import { useEffect, type ReactNode } from "react";
-import { View, Text, ActivityIndicator } from "react-native";
-import { useRouter, Redirect } from "expo-router";
+import { View, Text } from "@/components/tw"
+import { ActivityIndicator } from "react-native";
+import { useRouter } from "expo-router";
 import { useAuth } from "@/context/AuthContext";
 
 interface ProtectedRouteProps {

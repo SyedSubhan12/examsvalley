@@ -1,4 +1,5 @@
-import { View, Text, TouchableOpacity, SafeAreaView } from "react-native";
+import { View, Text, TouchableOpacity } from "@/components/tw"
+import { SafeAreaView } from "react-native";
 import { useRouter, Stack } from "expo-router";
 
 export default function NotFoundScreen() {

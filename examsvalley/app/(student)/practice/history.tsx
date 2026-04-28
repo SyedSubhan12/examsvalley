@@ -3,9 +3,8 @@
 // BUCKET:         B_convert — uses real API instead of mockData
 
 import { useQuery } from "@tanstack/react-query";
-import {
-  View, Text, TouchableOpacity, SafeAreaView, ActivityIndicator,
-} from "react-native";
+import { View, Text, TouchableOpacity } from "@/components/tw"
+import { SafeAreaView, ActivityIndicator } from "react-native";
 import { useRouter } from "expo-router";
 import { FlashList } from "@shopify/flash-list";
 import { useAuth } from "@/context/AuthContext";
